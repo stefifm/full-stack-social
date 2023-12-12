@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom'
-
+import propTypes from 'prop-types'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
 import Navbar from './components/Navbar/Navbar'
@@ -7,13 +7,16 @@ import LeftBar from './components/LeftBar/LeftBar'
 import RightBar from './components/RightBar/RightBar'
 import Home from './pages/home/Home'
 import Profile from './pages/profile/Profile'
+import './app.scss'
+import { useContext } from 'react'
+import { DarkModeContext } from './context/DarkModeContext'
 
 function App() {
   const currentUser = true
-
+  const { darkMode } = useContext(DarkModeContext)
   const Layout = () => {
     return (
-      <div>
+      <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
         <Navbar />
         <div style={{ display: 'flex' }}>
           <LeftBar />
@@ -70,3 +73,7 @@ function App() {
 }
 
 export default App
+
+App.propTypes = {
+  children: propTypes.node
+}
