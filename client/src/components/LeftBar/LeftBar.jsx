@@ -12,8 +12,12 @@ import Tutorials from '../../assets/11.png'
 import Courses from '../../assets/12.png'
 import Fund from '../../assets/13.png'
 import './leftbar.scss'
+import { useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
 
 const LeftBar = () => {
+  const { currentUser } = useContext(AuthContext)
+
   const firstSection = [
     { name: 'Friends', icon: Friends },
     { name: 'Groups', icon: Groups },
@@ -41,10 +45,10 @@ const LeftBar = () => {
         <div className='menu'>
           <div className='user'>
             <img
-              src='https://images.pexels.com/photos/3228727/pexels-photo-3228727.jpeg?auto=compress&cs=tinysrgb&w=1600'
+              src={currentUser.profilePic}
               alt=''
             />
-            <span>Mark Kansas</span>
+            <span>{currentUser.name}</span>
           </div>
           {firstSection.map((item, index) => (
             <div
