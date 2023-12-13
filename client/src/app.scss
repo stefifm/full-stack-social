@@ -40,6 +40,12 @@ $themes: (
   @return map-get($theme-map, $key);
 }
 
+@mixin small {
+  @media screen and (width:320px) {
+    @content;
+  }
+}
+
 @mixin mobile {
   @media screen and (max-width: 480px) {
     @content;

@@ -1,5 +1,9 @@
 @import url(reset.scss);
+@import './app.scss';
 
 body {
   font-family: 'Roboto', sans-serif;
+  @include small{
+    width: 101%;
+  }
 }

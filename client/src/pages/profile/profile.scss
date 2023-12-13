@@ -4,6 +4,10 @@
   @include themify($themes) {
     background: themed('bgSoft');
 
+    @include small{
+      width: 109.5%;
+    }
+
     // IMAGES
     .images {
       width: 100%;
@@ -34,18 +38,17 @@
     .profileContainer {
       padding: 20px 70px;
 
-      @include mobile{
-        padding: 10px 2px;
+      @include laptop{
+        padding: 20px;
       }
 
       @include tablet{
         padding: 20px;
       }
 
-      @include laptop{
-        padding: 20px;
+      @include mobile{
+        padding: 10px;
       }
-    
 
       // USER INFO
       .uInfo {
@@ -63,6 +66,10 @@
         justify-content: space-between;
         margin-bottom: 20px;
 
+        @include largeLaptop{
+          padding: 30px;
+        }
+
         @include mobile{
           flex-direction: column;
           height: 30vh;
@@ -70,24 +77,20 @@
           margin-top: 100px;
         }
 
- 
-        @include largeLaptop{
-          padding: 30px;
-        }
-
-
         .left {
           flex: 1;
           display: flex;
           gap: 10px;
 
-          @include tablet{
+          @include largeLaptop{
             flex-wrap: wrap;
           }
+
           @include laptop{
             flex-wrap: wrap;
           }
-          @include largeLaptop{
+
+          @include tablet{
             flex-wrap: wrap;
           }
 

@@ -5,16 +5,23 @@
     background: themed(bgSoft);
     padding: 20px 70px;
 
-    @include mobile{
-      padding: 10px 2px;
+    @include laptop{
+      padding: 20px;
     }
 
     @include tablet{
       padding: 20px;
     }
 
-    @include laptop{
-      padding: 20px;
+
+    @include mobile{
+      padding: 10px;
     }
+
+    @include small{
+      width: 109.5%;
+    }
+
+
   }
 }

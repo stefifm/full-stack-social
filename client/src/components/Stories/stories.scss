@@ -5,16 +5,18 @@
   height: 250px;
   margin-bottom: 30px;
 
-  @include mobile{
-    height: 50px;
-    justify-content: space-between;
-    gap: 5px;
-  }
-
   @include tablet{
     height: 150px;
     gap: 20px;
   }
+
+  @include mobile{
+    height: 50px;
+    justify-content: space-between;
+    gap: 5px;
+    
+  }
+
 
 
   .story {
@@ -46,14 +48,16 @@
       background: linear-gradient(rgba(39,11,96,0.5), rgba(39,11,96,0.5));
       padding: 3px;
 
-      @include mobile{
-        display: none;
-      }
-
       @include tablet{
         padding: 0;
         background: transparent;
       }
+
+      @include mobile{
+        display: none;
+      }
+
+
     }
 
     button {
