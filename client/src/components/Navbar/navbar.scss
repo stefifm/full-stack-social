@@ -13,10 +13,17 @@
   background: themed('backgroundColor');
   color: themed('textColor');
   z-index: 999;
+
   .left{
     display: flex;
     align-items: center;
     gap: 30px;
+
+    @include mobile{
+      gap: 15px;
+      margin: 0 auto;
+    }
+
 
     span{
       font-weight: bold;
@@ -31,6 +38,7 @@
       border: 1px solid themed('border');
       border-radius: 5px;
       padding: 5px;
+
       input{
         border: none;
         width: 500px;
@@ -38,6 +46,13 @@
         font-size: 16px;
         background: transparent;
         color: themed('textColor');
+        @include mobile{
+          display: none;
+        }
+
+        @include tablet{
+          width: 200px;
+        }
       }
     }
   }
@@ -46,11 +61,23 @@
     display: flex;
     align-items: center;
     gap: 20px;
+
+    @include mobile{
+      display: none;
+    }
+    
     .user{
       display: flex;
       align-items: center;
       gap: 10px;
       font-weight: 500;
+
+      @include tablet{
+        display: none;
+      }
+      @include laptop{
+        display: none;
+      }
       img{
         width: 30px;
         height: 30px;
