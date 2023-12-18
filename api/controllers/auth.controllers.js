@@ -46,15 +46,18 @@ const login = (req, res) => {
 
     const { password, ...others } = data[0]
 
-    res.cookie('accessToken', token, { httpOnly: true }).status(200).json(others)
+    res
+      .cookie('accessToken', token, { httpOnly: true, sameSite: 'none', secure: true })
+      .status(200)
+      .json(others)
   })
 }
 
 const logout = (req, res) => {
   res
     .clearCookie('accessToken', {
-      secure: true,
-      sameSite: 'none'
+      sameSite: 'none',
+      secure: true
     })
     .status(200)
     .json({ message: 'User logged out' })
