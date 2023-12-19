@@ -11,8 +11,6 @@ const Posts = () => {
       })
   })
 
-  console.log(data)
-
   return (
     <section className='posts'>
       {error

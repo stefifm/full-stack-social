@@ -65,7 +65,7 @@ const Post = ({ post }) => {
           </div>
         </div>
         {/* COMMENTS */}
-        {commentOpen && <Comments />}
+        {commentOpen && <Comments postId={post.id} />}
       </div>
     </article>
   )
