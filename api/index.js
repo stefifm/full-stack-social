@@ -6,6 +6,7 @@ import usersRoutes from './routes/users.routes.js'
 import postsRoutes from './routes/posts.routes.js'
 import commentsRoutes from './routes/comments.routes.js'
 import likesRoutes from './routes/likes.routes.js'
+import multer from 'multer'
 
 const app = express()
 
@@ -19,6 +20,22 @@ app.use(
   })
 )
 app.use(cookieParser())
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../client/public/upload')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+  const file = req.file
+  res.status(200).json(file.filename)
+})
 
 // ROUTES
 

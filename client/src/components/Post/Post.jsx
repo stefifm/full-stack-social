@@ -8,6 +8,7 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
 import './post.scss'
 import Comments from '../Comments/Comments'
 import { useState } from 'react'
+import moment from 'moment'
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false)
@@ -33,7 +34,7 @@ const Post = ({ post }) => {
                 style={{ textDecoration: 'none' }}>
                 <span className='name'>{post.name}</span>
               </Link>
-              <span className='date'>1 min ago</span>
+              <span className='date'>{moment(post.createAt).fromNow()}</span>
             </div>
           </div>
           <MoreHorizOutlinedIcon />
@@ -42,7 +43,7 @@ const Post = ({ post }) => {
         <div className='content'>
           <p>{post.desc}</p>
           <img
-            src={post.img}
+            src={'../../../public/upload/' + post.img}
             alt=''
           />
         </div>
