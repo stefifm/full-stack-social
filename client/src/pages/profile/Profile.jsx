@@ -10,6 +10,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 import './profile.scss'
 import Posts from '../../components/Posts/Posts'
+import { useQuery } from '@tanstack/react-query'
+import { makeRequest } from '../../api/axios'
+import { useLocation } from 'react-router-dom'
+import { useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
 const Profile = () => {
   const socialMedia = [
     { icon: <FacebookTwoToneIcon fontSize='large' />, link: 'https://www.facebook.com' },
@@ -18,57 +23,78 @@ const Profile = () => {
     { icon: <LinkedInIcon fontSize='large' />, link: 'https://www.facebook.com' },
     { icon: <PinterestIcon fontSize='large' />, link: 'https://www.facebook.com' }
   ]
+
+  const userId = parseInt(useLocation().pathname.split('/')[2])
+
+  const { currentUser } = useContext(AuthContext)
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ['user'],
+    queryFn: () =>
+      makeRequest.get('/users/find/' + userId).then((res) => {
+        return res.data
+      })
+  })
+
   return (
     <main className='profile'>
-      {/* IMAGES */}
-      <div className='images'>
-        <img
-          src='https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-          alt=''
-          className='cover'
-        />
-        <img
-          src='https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load'
-          alt=''
-          className='profilePic'
-        />
-      </div>
-      {/* PROFILE CONTAINER */}
-      <div className='profileContainer'>
-        <div className='uInfo'>
-          {/* LEFT */}
-          <div className='left'>
-            {socialMedia.map((social, index) => (
-              <a
-                href={social.link}
-                key={index}>
-                {social.icon}
-              </a>
-            ))}
+      {isPending ? (
+        'Loading...'
+      ) : error ? (
+        error.message
+      ) : (
+        <>
+          {/* IMAGES */}
+          <div className='images'>
+            <img
+              src={data?.coverPic}
+              alt=''
+              className='cover'
+            />
+            <img
+              src={data?.profilePic}
+              alt=''
+              className='profilePic'
+            />
           </div>
-          {/* CENTER */}
-          <div className='center'>
-            <span>Mark Kansas</span>
-            <div className='info'>
-              <div className='item'>
-                <PlaceIcon />
-                <span>USA</span>
+          {/* PROFILE CONTAINER */}
+          <div className='profileContainer'>
+            <div className='uInfo'>
+              {/* LEFT */}
+              <div className='left'>
+                {socialMedia.map((social, index) => (
+                  <a
+                    href={social.link}
+                    key={index}>
+                    {social.icon}
+                  </a>
+                ))}
               </div>
-              <div className='item'>
-                <LanguageIcon />
-                <span>stefifm.dev</span>
+              {/* CENTER */}
+              <div className='center'>
+                <span>{data?.name}</span>
+                <div className='info'>
+                  <div className='item'>
+                    <PlaceIcon />
+                    <span>{data?.city}</span>
+                  </div>
+                  <div className='item'>
+                    <LanguageIcon />
+                    <span>{data?.website}</span>
+                  </div>
+                </div>
+                {userId === currentUser.id ? <button>Update</button> : <button>Follow</button>}
+              </div>
+              {/* RIGHT */}
+              <div className='right'>
+                <EmailOutlinedIcon />
+                <MoreVertIcon />
               </div>
             </div>
-            <button>Follow</button>
+            <Posts />
           </div>
-          {/* RIGHT */}
-          <div className='right'>
-            <EmailOutlinedIcon />
-            <MoreVertIcon />
-          </div>
-        </div>
-        <Posts />
-      </div>
+        </>
+      )}
     </main>
   )
 }
