@@ -75,5 +75,5 @@ const Comments = ({ postId }) => {
 export default Comments
 
 Comments.propTypes = {
-  postId: propTypes.string
+  postId: propTypes.number
 }
