@@ -6,6 +6,7 @@ import usersRoutes from './routes/users.routes.js'
 import postsRoutes from './routes/posts.routes.js'
 import commentsRoutes from './routes/comments.routes.js'
 import likesRoutes from './routes/likes.routes.js'
+import relathionshipsRoutes from './routes/relationships.routes.js'
 import multer from 'multer'
 
 const app = express()
@@ -44,6 +45,7 @@ app.use(usersRoutes)
 app.use(postsRoutes)
 app.use(commentsRoutes)
 app.use(likesRoutes)
+app.use(relathionshipsRoutes)
 
 app.listen(8000, () => {
   console.log('Server is running on port 8000')

@@ -3,6 +3,7 @@ import { db } from '../connect.js'
 import jwt from 'jsonwebtoken'
 
 const getPosts = (req, res) => {
+  const userId = req.query.userId
   const token = req.cookies.accessToken
 
   if (!token) return res.status(401).json({ message: 'Unauthorized' })
@@ -10,7 +11,15 @@ const getPosts = (req, res) => {
   jwt.verify(token, 'secretkey', (err, userInfo) => {
     if (err) return res.status(403).json({ message: 'Token is not valid' })
 
-    const query = `
+    const query =
+      userId !== 'undefined'
+        ? `SELECT p.*, u.id AS userId, u.name, u.profilePic 
+    FROM posts AS p JOIN users AS u 
+    ON u.id = p.userId 
+    WHERE p.userId = ?
+    ORDER BY p.createAt DESC
+    `
+        : `
     SELECT p.*, u.id AS userId, u.name, u.profilePic 
     FROM posts AS p JOIN users AS u 
     ON u.id = p.userId
@@ -20,7 +29,9 @@ const getPosts = (req, res) => {
     ORDER BY p.createAt DESC
     `
 
-    db.query(query, [userInfo.id, userInfo.id], (err, data) => {
+    const values = userId !== 'undefined' ? [userId] : [userInfo.id, userInfo.id]
+
+    db.query(query, values, (err, data) => {
       if (err) return res.status(500).json({ message: err.message })
       return res.status(200).json(data)
     })

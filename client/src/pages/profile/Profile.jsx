@@ -10,7 +10,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 import './profile.scss'
 import Posts from '../../components/Posts/Posts'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { makeRequest } from '../../api/axios'
 import { useLocation } from 'react-router-dom'
 import { useContext } from 'react'
@@ -35,6 +35,29 @@ const Profile = () => {
         return res.data
       })
   })
+  const { data: relationshipData } = useQuery({
+    queryKey: ['relationships'],
+    queryFn: () =>
+      makeRequest.get('/relationships?followedUserId=' + userId).then((res) => {
+        return res.data
+      })
+  })
+
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: (following) => {
+      if (following) return makeRequest.delete('/relationships?userId=' + userId)
+      return makeRequest.post('/relationships', { userId })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['relationships'])
+    }
+  })
+
+  const handleFollow = () => {
+    mutation.mutate(relationshipData?.includes(currentUser.id))
+  }
 
   return (
     <main className='profile'>
@@ -83,7 +106,13 @@ const Profile = () => {
                     <span>{data?.website}</span>
                   </div>
                 </div>
-                {userId === currentUser.id ? <button>Update</button> : <button>Follow</button>}
+                {userId === currentUser.id ? (
+                  <button>Update</button>
+                ) : (
+                  <button onClick={handleFollow}>
+                    {relationshipData?.includes(currentUser.id) ? 'Following' : 'Follow'}
+                  </button>
+                )}
               </div>
               {/* RIGHT */}
               <div className='right'>
@@ -91,7 +120,7 @@ const Profile = () => {
                 <MoreVertIcon />
               </div>
             </div>
-            <Posts />
+            <Posts userId={userId} />
           </div>
         </>
       )}
