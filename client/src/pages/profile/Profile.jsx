@@ -10,11 +10,14 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 import './profile.scss'
 import Posts from '../../components/Posts/Posts'
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { makeRequest } from '../../api/axios'
 import { useLocation } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../context/AuthContext'
+import Update from '../../components/Update/Update'
+
 const Profile = () => {
   const socialMedia = [
     { icon: <FacebookTwoToneIcon fontSize='large' />, link: 'https://www.facebook.com' },
@@ -23,6 +26,8 @@ const Profile = () => {
     { icon: <LinkedInIcon fontSize='large' />, link: 'https://www.facebook.com' },
     { icon: <PinterestIcon fontSize='large' />, link: 'https://www.facebook.com' }
   ]
+
+  const [openUpdate, setOpenUpdate] = useState(false)
 
   const userId = parseInt(useLocation().pathname.split('/')[2])
 
@@ -70,12 +75,12 @@ const Profile = () => {
           {/* IMAGES */}
           <div className='images'>
             <img
-              src={data?.coverPic}
+              src={window.location.origin + '/upload/' + data?.coverPic}
               alt=''
               className='cover'
             />
             <img
-              src={data?.profilePic}
+              src={window.location.origin + '/upload/' + data?.profilePic}
               alt=''
               className='profilePic'
             />
@@ -107,7 +112,7 @@ const Profile = () => {
                   </div>
                 </div>
                 {userId === currentUser.id ? (
-                  <button>Update</button>
+                  <button onClick={() => setOpenUpdate(true)}>Update</button>
                 ) : (
                   <button onClick={handleFollow}>
                     {relationshipData?.includes(currentUser.id) ? 'Following' : 'Follow'}
@@ -123,6 +128,12 @@ const Profile = () => {
             <Posts userId={userId} />
           </div>
         </>
+      )}
+      {openUpdate && (
+        <Update
+          setOpenUpdate={setOpenUpdate}
+          user={data}
+        />
       )}
     </main>
   )
