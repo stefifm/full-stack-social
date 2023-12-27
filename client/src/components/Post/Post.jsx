@@ -49,7 +49,7 @@ const Post = ({ post }) => {
           {/* USER INFO */}
           <div className='userInfo'>
             <img
-              src={post.profilePic}
+              src={window.location.origin + '/upload/' + post.profilePic}
               alt=''
             />
             {/* USER DETAILS */}
@@ -68,7 +68,7 @@ const Post = ({ post }) => {
         <div className='content'>
           <p>{post.desc}</p>
           <img
-            src={'../../../public/upload/' + post.img}
+            src={window.location.origin + '/upload/' + post.img}
             alt=''
           />
         </div>
